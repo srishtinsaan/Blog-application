@@ -125,4 +125,4 @@ export class StorageService{
 
 const service = new StorageService()
 
-export default StorageService
+export default service

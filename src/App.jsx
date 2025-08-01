@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import {useDispatch} from "react-redux"
 import authService from "../src/appwrite/auth"
 import {login, logout} from "../src/features/authSlice"
+import { Footer, Header } from './components/index'
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -21,8 +22,8 @@ function App() {
   }, [])
 
   return !loading  ? (
-    <div>
-      <div>
+    <div className='w-screen h-screen bg-gray-400 flex justify-center'>
+      <div className=''>
         <Header/>
         <main>
           {/* outlet */}

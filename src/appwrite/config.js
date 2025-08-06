@@ -114,7 +114,7 @@ export class StorageService{
         }
     }
 
-    getFilePreview(fileId){ // not async bcz its response is fast
+    getFileView(fileId){ // not async bcz its response is fast
         return  this.storage.getFilePreview(
     conf.bucketID,
     fileId

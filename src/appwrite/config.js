@@ -42,7 +42,7 @@ export class StorageService{
     conf.databaseID,
     conf.collectionID,
     slug, // documentID here
-    
+
       { title, content, featuredImage, status}
 );
         } catch (error) {

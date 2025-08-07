@@ -26,11 +26,11 @@ export class StorageService{
                     content,
                     featuredImage,
                     status,
-                    userId,
+                    userID : userId,
     }
 );
         } catch (error) {
-            console.log("error :: create post");
+            console.log("error :: create post", error);
         }
     }
 

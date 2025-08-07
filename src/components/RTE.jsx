@@ -1,6 +1,7 @@
-import {tinymce} from "@tinymce/tinymce-react"
+import {Editor} from "@tinymce/tinymce-react"
 import conf from "../conf/conf"
 import {Controller} from "react-hook-form"
+
 export default function RTE({name, control, label, defaultValue =""}) {
     
   return (
@@ -10,9 +11,8 @@ export default function RTE({name, control, label, defaultValue =""}) {
         {/* // hum chahte to useForm karna the pr nahi kr skte bcz tinyMCD third party h na ki khudka input component 
         // that is why we use Controller for third party stuff */}
         <Controller 
-            name="email"
+           name={name || "content"}
             control={control} //controller component ko form se connect karne k liye.
-            defaultValue=""
             render={({ field : {onChange} }) => (
                <Editor
                     apiKey={conf.tinymceID}

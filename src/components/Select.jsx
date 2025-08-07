@@ -3,8 +3,9 @@ function Select({
     options , 
     label,
     className = '',
+     ref, // direct ref prop (React 19 forwardRef depricated)
     ...props
-}, ref) {
+}) {
 
     const Id = useId()
 
@@ -38,5 +39,5 @@ function Select({
   )
 }
 
-export default React.forwardRef(Select)
+export default Select;
 

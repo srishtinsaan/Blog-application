@@ -3,6 +3,7 @@ import {useDispatch} from "react-redux"
 import authService from "../src/appwrite/auth"
 import {login, logout} from "../src/features/authSlice"
 import { Footer, Header } from './components/index'
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -12,11 +13,14 @@ function App() {
     authService.getCurrentUser()
     .then( (data) => {
       if(data){
-        dispatch(login({data}))
+        dispatch(login(data))
       }else{
-        dispatch(logout())
+        dispatch(logout({}))
       }
     } )
+    .catch((error) => {
+console.log('Appwirte service :: getCurrentUser :: error ', error)
+})
     .finally(() => setLoading(false))
 
   }, [])
@@ -26,7 +30,7 @@ function App() {
       <div className=''>
         <Header/>
         <main>
-          {/* outlet */}
+          <Outlet/>
         </main>
         <Footer/>
       </div>

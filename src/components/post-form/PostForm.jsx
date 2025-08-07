@@ -1,4 +1,4 @@
-import {Button, Logo, RTE, Select} from "../index"
+import {Button, Logo, RTE, Select, Input} from "../index"
 import service from "../../appwrite/config"
 import { useSelector} from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -24,7 +24,7 @@ function PostForm({post}) {
     const submit = async (data) => {
 
         if(post){
-            const file = data.image[0] ? service.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
             if(file){
                 service.deleteFile(post.featuredImage)
             }
@@ -45,7 +45,7 @@ function PostForm({post}) {
             if(file){
                 const fileId = file.$id
                 data.featuredImage = fileId
-                const dbPost = await service.createPost( { ...data, userId : userData.$Id })
+                const dbPost = await service.createPost( { ...data, userId : userData.$id })
                 // createPost({title, slug, content, featuredImage, status, userId}) in config.js
 
                 if(dbPost){
@@ -63,7 +63,7 @@ function PostForm({post}) {
 
     const slugTransform = useCallback((value) => {
         if(value && typeof(value) === 'string'){
-            return value.trim().toLowerCase().replace(/^[a-zA-Z\d\s]+/g, '-').replace(/\s/g, '-')
+            return value.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
         }
         return ""
     }, [])
@@ -71,7 +71,7 @@ function PostForm({post}) {
     useEffect(() => {
         const subscription = watch((value, {name}) => {
             if(name === "title"){
-                setValue('slug', slugTransform(value.title, {shouldValidate : true}))
+                setValue('slug' , slugTransform(value.title) , {shouldValidate : true})
             }
         })
         
@@ -112,7 +112,7 @@ function PostForm({post}) {
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFileView(post.featuredImage)}
+                            src={service.getFileView(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />

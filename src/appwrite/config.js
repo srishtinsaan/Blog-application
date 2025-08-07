@@ -1,5 +1,5 @@
 import conf from "../conf/conf";
-import { Client, Databases, ID, Query, Storage } from "appwrite";
+import { Client, Databases, ID, Query, Storage, Permission, Role } from "appwrite";
 
 export class StorageService{
 
@@ -10,8 +10,8 @@ export class StorageService{
     constructor(){
         this.client
             .setEndpoint(conf.appwriteURL)
-            .setProject(conf.projectID)
-        this.storage = new Storage(this.client)
+            .setProject(conf.projectID);
+        this.storage = new Storage(this.client);
         this.databases = new Databases(this.client);
     }
 
@@ -20,8 +20,14 @@ export class StorageService{
             return await this.databases.createDocument(
     conf.databaseID,
     conf.collectionID,
-    slug, //assuming that slud is our ID (in place of ID.unique())
-    { title, content, featuredImage, status, userId }
+    slug, //assuming that slug is our ID (in place of ID.unique())
+    {
+                    title,
+                    content,
+                    featuredImage,
+                    status,
+                    userId,
+    }
 );
         } catch (error) {
             console.log("error :: create post");
@@ -36,6 +42,7 @@ export class StorageService{
     conf.databaseID,
     conf.collectionID,
     slug, // documentID here
+    
       { title, content, featuredImage, status}
 );
         } catch (error) {
@@ -73,6 +80,21 @@ export class StorageService{
         }
     }
 
+    async getPosts(queries = [Query.equal("status", "active")]){ 
+        try {
+            return await this.databases.listDocuments(
+                conf.databaseID,
+                conf.collectionID,
+                queries,
+                
+
+            )
+        } catch (error) {
+            console.log("Appwrite serive :: getPosts :: error", error);
+            return false
+        }
+    }
+
     async listPosts(){ //getting only those posts whose status is active
         try {
             return await this.databases.listDocuments(
@@ -93,7 +115,8 @@ export class StorageService{
             return await this.storage.createFile(
     conf.bucketID,
     ID.unique(),
-    file
+    file,
+    [Permission.read(Role.any())]
     )
         } catch (error) {
             console.log("error :: upload file");
@@ -115,7 +138,7 @@ export class StorageService{
     }
 
     getFileView(fileId){ // not async bcz its response is fast
-        return  this.storage.getFilePreview(
+        return  this.storage.getFileView(
     conf.bucketID,
     fileId
     )

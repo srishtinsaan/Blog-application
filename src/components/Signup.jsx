@@ -17,7 +17,8 @@ function Signup() {
         try {   
             const userData = await authService.createAccount(data)
             if(userData){
-                const currentUser = await authService.getCurrentUser(userData)
+                await authService.login(data); 
+                const currentUser = await authService.getCurrentUser()
                 if(currentUser){
                     dispatch(login(currentUser))
                 }
@@ -50,7 +51,7 @@ function Signup() {
                 {error && <p className="text-red-600 mt-8 text-center">
                     {error}
                 </p>}
-                <form onSubmit={handleSubmit(createAcc())}>
+                <form onSubmit={handleSubmit(createAcc)}>
                     <div className='space-y-5'>
 
                         {/* Name */}
@@ -82,7 +83,7 @@ function Signup() {
                         <Input 
                             label="password : "
                             placeholder="Enter your password "
-                            type="password "
+                            type="password"
                             {...register("password", {
                             required: true,
             

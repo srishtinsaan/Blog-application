@@ -28,10 +28,7 @@ A modern blog application built with **Vite + React**, powered by **Appwrite** f
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/blogsphere.git
-
-# Go into the project directory
-cd blogsphere
+git clone https://github.com/srishtinsaan/Blog-application
 
 # Install dependencies
 npm install

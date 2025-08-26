@@ -45,12 +45,15 @@ function Signup() {
                         to="/login"
                         className="font-medium text-primary transition-all duration-200 hover:underline"
                     >
-                        Sign In
+                        Sign In 
                     </Link>
                 </p>
                 {error && <p className="text-red-600 mt-8 text-center">
                     {error}
                 </p>}
+
+
+                {/* form */}
                 <form onSubmit={handleSubmit(createAcc)}>
                     <div className='space-y-5'>
 

@@ -50,9 +50,9 @@ export class AuthService{
         return null; // agar acc na mile ya koi error aa jae
     }
 
-    async logout(){
+    async logout(){ 
         try {
-            await this.account.deleteSession()
+            await this.account.deleteSessions()
         } catch (error) {
             console.log("Appwrite Service :: logout :: error", error);
         }

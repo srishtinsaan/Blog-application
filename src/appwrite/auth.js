@@ -16,25 +16,44 @@ export class AuthService{
 
 
     // below thing not need to be change when you switch from appwrite to any other backend
-    async createAccount({email, password, name}){
-        try{
-            const userAccount = await this.account.create(ID.unique(), email, password, name);
+    async createAccount({ email, password, name }) {
+        try {
+            const userAccount = await this.account.create(
+                ID.unique(),
+                email,
+                password,
+                name
+            );
+            console.log("User created:", userAccount);
+                
             if(userAccount){
-                // call another method
-                return this.login({email, password})
-
+                try { 
+                    return this.login({email, password})
+                    
+                } catch (error) {
+                    // if email already exists
+                    if (error.code === 409) {
+                        throw new Error("User with this email already exists. Please login.");
+                    }
+                    await this.account.deleteSession('current'); 
+                }
             }else{
                 return userAccount;
             }
-        }
-        catch(error){
-            throw error;
-        }
+
+
+            // logout any active session before login
+
+    } catch (error) {
+        throw error;
     }
+}
+
 
     async login({email, password}){
         try{
-            return await this.account.createEmailPasswordSession(email, password)
+            await this.account.deleteSession('current').catch(() => {});
+            return await this.account.createEmailPasswordSession(email, password);
         }catch(error){
             throw error;
         }
@@ -62,3 +81,4 @@ export class AuthService{
 const authService  = new AuthService(); //object created
 
 export default authService // object exported taaki directly obj se kuch bhi features use kar sake.
+
